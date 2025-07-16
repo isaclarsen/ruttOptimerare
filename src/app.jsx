@@ -1,12 +1,15 @@
 import {createRoot} from "react-dom/client"
 import { Header } from "./components/Header";
 import { AddressForm } from "./components/AddressForm";
+import { ScheduleForm } from "./components/ScheduleForm";
+import { RouteResult } from "./components/RouteResult";
 
 function App(){
     return(
         <div className="bg-[#1C1C1C] min-h-screen">
             <Header/>
             <AddressForm/>
+            <RouteResult/>
         </div>
     )
 }
