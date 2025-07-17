@@ -1,17 +1,30 @@
-import { useState } from "react";
+import axios from 'axios';
 
-export function AddressForm(){
+export function AddressForm({setWaypoints, setUrl}){
 
-    const [waypoints, setWaypoints] = useState([]);
+async function fetchOptimizedRoute(waypoints) {
+  try {
+    const start = "Frykholmsgatan 5, 28130 Hässleholm";
+    const end = "Frykholmsgatan 5, 28130 Hässleholm";
 
-    async function fetchOptimizedRoute(waypoints){
+    const response = await axios.post("https://rutt-backend.vercel.app/api/route", {
+      start,
+      end,
+      waypoints,
+    });
 
-    }
+    const optimizedWaypoints = response.data.optimized;
+    const fullRoute = [start, ...optimizedWaypoints, end];
+    const mapsUrl = 'https://www.google.com/maps/dir/' + fullRoute.map(addr => encodeURIComponent(addr)).join('/');
+    setUrl(mapsUrl);
+  } catch (error) {
+    console.error('❌ Kunde inte hämta rutt:', error);
+  }
+}
 
     function handleAdress(e){
         e.preventDefault();
         const userWaypoints = e.target.adressInput.value.split("\n");
-        setWaypoints(userWaypoints);
         fetchOptimizedRoute(userWaypoints)
     }
 
